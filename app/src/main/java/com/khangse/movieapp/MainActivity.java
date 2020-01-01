@@ -2,6 +2,7 @@ package com.khangse.movieapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -40,7 +43,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private RecyclerView recyclerView;
     private MoviesApdapter adapter;
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog pd;
     private SwipeRefreshLayout swipeContainer;
     public static final String LOG_TAG = MoviesApdapter.class.getName();
-    int cacheSize = 10 * 1024 * 1024; // 10 MiB
+    //int cacheSize = 10 * 1024 * 1024; // 10 MiB
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        LoadJSON();
+       checkSortOrder();
     }
 
     private boolean isNetworkAvailable() {
@@ -169,6 +172,67 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void LoadJSON1() {
+        try {
+            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Please obtain API key firstly from themoviedb.org", Toast.LENGTH_SHORT).show();
+                pd.dismiss();
+                return;
+            }
+            Client _client = new Client();
+//            Cache cache = new Cache(getCacheDir(), cacheSize);
+//
+//            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                    .cache(cache)
+//                    .addInterceptor(new Interceptor() {
+//                        @Override
+//                        public okhttp3.Response intercept(Interceptor.Chain chain)
+//                                throws IOException {
+//                            Request request = chain.request();
+//                            if (!isNetworkAvailable()) {
+//                                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale \
+//                                request = request
+//                                        .newBuilder()
+//                                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+//                                        .build();
+//                            }
+//                            return chain.proceed(request);
+//                        }
+//                    })
+//                    .build();
+//
+//            Retrofit.Builder builder = new Retrofit.Builder()
+//                    .baseUrl("http://api.themoviedb.org/3/")
+//                    .client(okHttpClient)
+//                    .addConverterFactory(GsonConverterFactory.create());
+//
+//            Retrofit retrofit = builder.build();
+            Service apiService = _client.getClient().create(Service.class);
+            Call<MoviesResponse> call = apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
+            call.enqueue(new Callback<MoviesResponse>() {
+                @Override
+                public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                    List<Movie> movies = response.body().getResults();
+                    recyclerView.setAdapter(new MoviesApdapter(getApplicationContext(), movies));
+                    recyclerView.smoothScrollToPosition(0);
+                    if (swipeContainer.isRefreshing()) {
+                        swipeContainer.setRefreshing(false);
+                    }
+                    pd.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                    Log.d("ERROR", t.getMessage());
+                    Toast.makeText(MainActivity.this, "Error fetching data!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Log.d("ERROR", e.getMessage());
+            Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -179,9 +243,41 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.d("LOG_TAG", "Preferences updated");
+        checkSortOrder();
+    }
+
+    private void checkSortOrder(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String sortOrder = preferences.getString(
+                this.getString(R.string.pref_sort_order_key),
+                this.getString(R.string.pref_most_popular)
+        );
+
+        if(sortOrder.equals(this.getString(R.string.pref_most_popular))){
+            Log.d("LOG_TAG", "Sorting by most popular");
+            LoadJSON();
+        }else{
+            Log.d("LOG_TAG", "Sorting by highest popular");
+            LoadJSON1();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(movieList.isEmpty()){
+            checkSortOrder();
         }
     }
 }
