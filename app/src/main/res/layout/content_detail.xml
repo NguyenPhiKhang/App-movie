@@ -23,7 +23,8 @@
                 android:textAlignment="center"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textStyle="bold"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                android:layout_marginBottom="50dp"/>
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -32,7 +33,8 @@
                 android:text="title"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
-                android:layout_below="@+id/movietitle"/>
+                android:layout_below="@+id/movietitle"
+                android:layout_marginBottom="50dp"/>
             <TextView
                 android:id="@+id/plotsynopsis"
                 android:layout_width="match_parent"
@@ -41,7 +43,8 @@
                 android:text="@string/plot"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
-                android:layout_below="@+id/title"/>
+                android:layout_below="@+id/title"
+                android:layout_marginBottom="50dp"/>
             <TextView
                 android:id="@+id/rating"
                 android:layout_width="match_parent"
@@ -50,7 +53,8 @@
                 android:text="@string/rating"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
-                android:layout_below="@+id/plotsynopsis"/>
+                android:layout_below="@+id/plotsynopsis"
+                android:layout_marginBottom="50dp"/>
             <TextView
                 android:id="@+id/userrating"
                 android:layout_width="match_parent"
@@ -59,7 +63,8 @@
                 android:text="@string/rating"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
-                android:layout_below="@+id/rating"/>
+                android:layout_below="@+id/rating"
+                android:layout_marginBottom="50dp"/>
             <TextView
                 android:id="@+id/release"
                 android:layout_width="match_parent"
@@ -68,7 +73,8 @@
                 android:text="@string/release"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
-                android:layout_below="@+id/userrating"/>
+                android:layout_below="@+id/userrating"
+                android:layout_marginBottom="50dp"/>
             <TextView
                 android:id="@+id/releasedate"
                 android:layout_width="match_parent"
@@ -77,7 +83,8 @@
                 android:text="@string/release"
                 android:layout_marginTop="@dimen/layout_margin_top"
                 android:textSize="20sp"
-                android:layout_below="@+id/release"/>
+                android:layout_below="@+id/release"
+                android:layout_marginBottom="50dp"/>
         </RelativeLayout>
 
     </ScrollView>
