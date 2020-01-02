@@ -85,6 +85,18 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/releasedate" />
 
+                <com.github.ivbaranov.mfb.MaterialFavoriteButton
+                    android:id = "@+id/favorite_button"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:mfb_type="heart"
+                    android:layout_alignParentRight ="true"
+                    app:layout_constraintRight_toLeftOf="@+id/userrating"
+                    app:layout_constraintTop_toBottomOf="@+id/userrating"
+                    app:layout_constraintBottom_toTopOf="@+id/userrating"
+                    app:layout_constraintLeft_toRightOf="@+id/releasedate"
+                    android:background="@color/colorPrimary" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         return null;
     }
 
+
     private void initViews() {
         pd = new ProgressDialog(this);
         pd.setMessage("Fetching Movies...");

@@ -1,6 +1,7 @@
 package com.khangse.movieapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -11,12 +12,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.khangse.movieapp.adapter.TrailerAdapter;
 import com.khangse.movieapp.api.Client;
 import com.khangse.movieapp.api.Service;
@@ -75,6 +79,27 @@ public class DetailActivity extends AppCompatActivity {
         else{
             Toast.makeText(this, "No Data API", Toast.LENGTH_SHORT).show();
         }
+
+        MaterialFavoriteButton favoriteButton=(MaterialFavoriteButton)findViewById(R.id.favorite_button);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        favoriteButton.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
+            @Override
+            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                SharedPreferences.Editor editor = getSharedPreferences("com.khangse.movieapp.DetailActivity", MODE_PRIVATE).edit();
+                if(favorite){
+                    editor.putBoolean("Favorite Added", true);
+                    editor.commit();
+                    //saveFavorite();
+                    Snackbar.make(buttonView, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
+                }else{
+                    editor.putBoolean("Favorite Removed", true);
+                    editor.commit();
+                    Snackbar.make(buttonView, "Removed from Favorite", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         initViews();
     }
 
