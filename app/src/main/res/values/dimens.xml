@@ -57,7 +57,7 @@
 
     <!-- Size of the cast image in the cast_list_item -->
     <dimen name="width_cast_image">72dp</dimen>
-    <dimen name="height_cast_image">84dp</dimen>
+    <dimen name="height_cast_image">72dp</dimen>
     <!-- Margin for the cast name TextView in the cast_list_item -->
     <dimen name="margin_cast_name">24dp</dimen>
     <!-- Margin for the cast character TextView in the cast_list_item -->

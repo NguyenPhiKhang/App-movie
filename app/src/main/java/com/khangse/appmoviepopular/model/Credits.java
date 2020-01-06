@@ -20,6 +20,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.khangse.appmoviepopular.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,6 @@ import java.util.List;
  * This class implements Parcelable interface to allow {@link Credits} object to be sent as a Parcel
  */
 public class Credits implements Parcelable {
-    public static final int BYTE = 0x01;
 
     @SerializedName("cast")
     private List<Cast> mCast;
@@ -38,13 +38,13 @@ public class Credits implements Parcelable {
     private List<Crew> mCrew;
 
     private Credits(Parcel in) {
-        if (in.readByte() == BYTE) {
+        if (in.readByte() == Constant.BYTE) {
             mCast = new ArrayList<>();
             in.readList(mCast, Cast.class.getClassLoader());
         } else {
             mCast = null;
         }
-        if (in.readByte() == BYTE) {
+        if (in.readByte() == Constant.BYTE) {
             mCrew = new ArrayList<>();
             in.readList(mCrew, Crew.class.getClassLoader());
         } else {

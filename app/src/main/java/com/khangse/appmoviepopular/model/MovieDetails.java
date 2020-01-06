@@ -53,6 +53,8 @@ public class MovieDetails implements Parcelable {
     @SerializedName("credits")
     private Credits mCredits;
 
+    private Movie movie;
+
     private MovieDetails(Parcel in) {
         mBudget = in.readLong();
         mRuntime = in.readInt();
@@ -74,6 +76,14 @@ public class MovieDetails implements Parcelable {
             return new MovieDetails[size];
         }
     };
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
 
     public void setBudget(long budget) {
         mBudget = budget;

@@ -31,6 +31,7 @@ import com.khangse.appmoviepopular.api.Client;
 import com.khangse.appmoviepopular.api.Service;
 import com.khangse.appmoviepopular.model.Movie;
 import com.khangse.appmoviepopular.model.MoviesResponse;
+import com.khangse.appmoviepopular.utils.Constant;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ViewListener;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
@@ -114,7 +115,7 @@ public class MovieFragment extends Fragment {
 
     private void LoadJson() {
         try {
-            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
+            if (Constant.API_KEY.isEmpty()) {
                 Toast.makeText(mContext, "Please obtain API key firstly from themoviedb.org", Toast.LENGTH_SHORT).show();
                 pd.dismiss();
                 return;
@@ -148,7 +149,7 @@ public class MovieFragment extends Fragment {
 //
 //            Retrofit retrofit = builder.build();
             Service apiService = _client.getClient().create(Service.class);
-            Call<MoviesResponse> callPopular = apiService.getPopularMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
+            Call<MoviesResponse> callPopular = apiService.getPopularMovies(Constant.API_KEY);
             callPopular.enqueue(new Callback<MoviesResponse>() {
                 @Override
                 public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
@@ -170,7 +171,7 @@ public class MovieFragment extends Fragment {
                 }
             });
 
-            Call<MoviesResponse> callTopRated = apiService.getTopRatedMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
+            Call<MoviesResponse> callTopRated = apiService.getTopRatedMovies(Constant.API_KEY);
             callTopRated.enqueue(new Callback<MoviesResponse>() {
                 @Override
                 public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
@@ -192,7 +193,7 @@ public class MovieFragment extends Fragment {
                 }
             });
 
-            Call<MoviesResponse> callNowplaying = apiService.getNowPlayingMovies(BuildConfig.THE_MOVIE_DB_API_TOKEN);
+            Call<MoviesResponse> callNowplaying = apiService.getNowPlayingMovies(Constant.API_KEY);
             callNowplaying.enqueue(new Callback<MoviesResponse>() {
                 @Override
                 public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
