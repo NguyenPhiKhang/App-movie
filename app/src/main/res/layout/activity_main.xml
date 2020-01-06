@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    tools:context=".MainActivity"
+    android:background="@color/md_black_1000">
 
-<include layout="@layout/content_main" />
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bar_bottom"
+        android:layout_marginBottom="0dp"/>
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@drawable/selector_bottom_navigator"
+        app:itemTextColor="@drawable/selector_bottom_navigator"
+        app:menu="@menu/bottom_navigation"
+        app:elevation="4dp"/>
+
+    <ImageView
+        android:id="@+id/bar_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:contentDescription="@string/bottom_navigation_border"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/bottom_nav_border"
+        android:layout_above="@+id/bottom_navigator"/>
+
+
+</RelativeLayout>

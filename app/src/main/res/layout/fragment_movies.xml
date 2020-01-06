@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_black_1000">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/customCarouselView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:disableAutoPlayOnUserInteraction="true"
+                app:fillColor="#FFFFFFFF"
+                app:pageColor="#00000000"
+                app:radius="6dp"
+                app:strokeColor="#FF777777"
+                app:strokeWidth="1dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:indicatorGravity="right|bottom"
+                app:indicatorMarginVertical="20dp"/>
+
+
+            <TextView
+                android:id="@+id/txt_bestpopular"
+                android:layout_width="297dp"
+                android:layout_height="50dp"
+                android:text="Best Popular"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:gravity="bottom|start"
+                android:layout_marginStart="10dp"
+                android:paddingBottom="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customCarouselView"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="97dp"
+                android:layout_height="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/txt_bestpopular"
+                app:layout_constraintTop_toBottomOf="@+id/customCarouselView">
+                <ImageView
+                    android:id="@+id/btn_popular_all"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:paddingTop="15dp"
+                    android:paddingLeft="20dp"
+                    app:srcCompat="@drawable/ic_chevron_right_black_24dp"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_rv"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:layout_constraintTop_toBottomOf="@+id/txt_bestpopular">
+
+                <ProgressBar
+                    android:id="@+id/probar_popular"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+
+                <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+                    android:id="@+id/recyclerview_popular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:msrv_gravity="start"
+                    app:msrv_ms_per_inch="100"
+                    app:msrv_snap_count="3"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txt_top_rated"
+                android:layout_width="297dp"
+                android:layout_height="50dp"
+                android:text="Top Rated"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:gravity="bottom|start"
+                android:paddingBottom="5dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rl_rv"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="97dp"
+                android:layout_height="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/txt_top_rated"
+                app:layout_constraintTop_toBottomOf="@+id/rl_rv">
+                <ImageView
+                    android:id="@+id/btn_toprated_all"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:paddingTop="15dp"
+                    android:paddingLeft="20dp"
+                    app:srcCompat="@drawable/ic_chevron_right_black_24dp"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                app:layout_constraintTop_toBottomOf="@+id/txt_top_rated"
+                android:paddingBottom="20dp">
+                <ProgressBar
+                    android:id="@+id/probar_toprated"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+
+                <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+                    android:id="@+id/rv_top_rated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:msrv_gravity="start"
+                    android:clipToPadding="false"
+                    app:msrv_ms_per_inch="100"
+                    app:msrv_snap_count="3"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                </com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</RelativeLayout>
