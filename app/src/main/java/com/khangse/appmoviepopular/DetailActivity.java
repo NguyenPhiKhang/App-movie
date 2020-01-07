@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -26,17 +25,14 @@ import com.google.android.material.tabs.TabLayout;
 import com.khangse.appmoviepopular.adapter.DetailPageAdapter;
 import com.khangse.appmoviepopular.api.Client;
 import com.khangse.appmoviepopular.api.Service;
+import com.khangse.appmoviepopular.data.FavoriteContract;
+import com.khangse.appmoviepopular.data.FavoriteDbHelper;
+import com.khangse.appmoviepopular.fragment.DepthPageTransformer;
 import com.khangse.appmoviepopular.model.Credits;
 import com.khangse.appmoviepopular.model.Genre;
 import com.khangse.appmoviepopular.model.Movie;
 import com.khangse.appmoviepopular.model.MovieDetails;
-import com.khangse.appmoviepopular.model.Review;
-import com.khangse.appmoviepopular.model.Trailer;
-import com.khangse.appmoviepopular.model.TrailerResponse;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,15 +54,13 @@ public class DetailActivity extends AppCompatActivity {
     private int movie_id;
 
     private MultiSnapRecyclerView recyclerView;
-    //private TrailerAdapter trailerAdapter;
-    //private List<Trailer> trailerList;
 
-    //private FavoriteDbHelper favoriteDbHelper;
-//    private Movie favorite;
-//    private final AppCompatActivity activity = DetailActivity.this;
-//    String thumbnail, movieName, synopsis, rating, dateOfRelease;
-//
-//    private SQLiteDatabase mDb;
+    private FavoriteDbHelper favoriteDbHelper;
+    private SQLiteDatabase mDb;
+    private Movie movie_favorites;
+
+    private final AppCompatActivity activity = DetailActivity.this;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,11 +74,11 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTabLayout.setupWithViewPager(mViewPager);
 
-//
-//        //TODO
-//        FavoriteDbHelper dbHelper = new FavoriteDbHelper(this);
-//        mDb = dbHelper.getWritableDatabase();
-//
+
+        //TODO
+        FavoriteDbHelper dbHelper = new FavoriteDbHelper(this);
+        mDb = dbHelper.getWritableDatabase();
+
         imageBackdrop = (ImageView) findViewById(R.id.image_movie_backdrop);
         tvRuntime = (TextView) findViewById(R.id.tv_runtime);
         tvGenre = (TextView) findViewById(R.id.tv_genre);
@@ -93,13 +87,12 @@ public class DetailActivity extends AppCompatActivity {
         pbGenre = (ProgressBar) findViewById(R.id.pb_detail_loading_indicator);
         pbGenre.setVisibility(View.VISIBLE);
 
-//
         Intent intentThatStartedThisActivity = getIntent();
         if (intentThatStartedThisActivity.hasExtra("movies")) {
 
             movie = getIntent().getParcelableExtra("movies");
-            nameOfMovie.setText(movie.getTitle());
-            releaseDate.setText((movie.getReleaseDate().split("-"))[0]);
+            nameOfMovie.setText(movie.getTitle().toString());
+            releaseDate.setText((movie.getReleaseDate().equals(""))?"":(movie.getReleaseDate().split("-"))[0]);
             movie_id = movie.getId();
 
             Glide.with(this)
@@ -138,48 +131,49 @@ public class DetailActivity extends AppCompatActivity {
 ////        });
 //
 //
-//        if (Exists(movieName)){
-//            favoriteButton.setFavorite(true);
-//            favoriteButton.setOnFavoriteChangeListener(
-//                    new MaterialFavoriteButton.OnFavoriteChangeListener() {
-//                        @Override
-//                        public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-//                            if (favorite == true) {
-//                                saveFavorite();
-//                                Snackbar.make(buttonView, "Added to Favorite",
-//                                        Snackbar.LENGTH_SHORT).show();
-//                            } else {
-//                                favoriteDbHelper = new FavoriteDbHelper(DetailActivity.this);
-//                                favoriteDbHelper.deleteFavorite(movie_id);
-//                                Snackbar.make(buttonView, "Removed from Favorite",
-//                                        Snackbar.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//
-//
-//        }else {
-//            favoriteButton.setOnFavoriteChangeListener(
-//                    new MaterialFavoriteButton.OnFavoriteChangeListener() {
-//                        @Override
-//                        public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-//                            if (favorite == true) {
-//                                saveFavorite();
-//                                Snackbar.make(buttonView, "Added to Favorite",
-//                                        Snackbar.LENGTH_SHORT).show();
-//                            } else {
-//                               deleteFavorite(movie_id);
-//                                Snackbar.make(buttonView, "Removed from Favorite",
-//                                        Snackbar.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//
-//
-//        }
+
+        MaterialFavoriteButton favoriteButton =(MaterialFavoriteButton)findViewById(R.id.favorite_button);
+
+        if (Exists(nameOfMovie.getText().toString())) {
+            favoriteButton.setFavorite(true);
+            favoriteButton.setOnFavoriteChangeListener(
+                    new MaterialFavoriteButton.OnFavoriteChangeListener() {
+                        @Override
+                        public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                            if (favorite == true) {
+                                saveFavorite();
+                                Snackbar.make(buttonView, "Added to Favorite",
+                                        Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                favoriteDbHelper = new FavoriteDbHelper(DetailActivity.this);
+                                favoriteDbHelper.deleteFavorite(movie_id);
+                                Snackbar.make(buttonView, "Removed from Favorite",
+                                        Snackbar.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
 
-        initViews();
+        } else {
+            favoriteButton.setOnFavoriteChangeListener(
+                    new MaterialFavoriteButton.OnFavoriteChangeListener() {
+                        @Override
+                        public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                            if (favorite == true) {
+                                saveFavorite();
+                                Snackbar.make(buttonView, "Added to Favorite",
+                                        Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                deleteFavorite(movie_id);
+                                Snackbar.make(buttonView, "Removed from Favorite",
+                                        Snackbar.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+
+
+        //initViews();
     }
 
     private void LoadDetailMovie() {
@@ -198,10 +192,10 @@ public class DetailActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             if (response.body() != null) {
                                 movieDetails = response.body();
-                                tvRuntime.setText(movieDetails.getRuntime()+" min");
-                                String genres="";
-                                for (Genre genre:movieDetails.getGenres()) {
-                                    genres+=genre.getGenreName()+", ";
+                                tvRuntime.setText(movieDetails.getRuntime() + " min");
+                                String genres = "";
+                                for (Genre genre : movieDetails.getGenres()) {
+                                    genres += genre.getGenreName() + ", ";
                                 }
                                 tvGenre.setText(genres);
                                 credits = movieDetails.getCredits();
@@ -227,8 +221,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setupViewPager() {
         DetailPageAdapter detailPageAdapter = new DetailPageAdapter(this, getSupportFragmentManager(), movieDetails, mViewPager);
-        mViewPager.setAdapter(detailPageAdapter);
         mViewPager.setCurrentItem(0);
+        mViewPager.setAdapter(detailPageAdapter);
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -248,27 +242,29 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-    //    public boolean Exists(String searchItem) {
-//
-//        String[] projection = {
-//                FavoriteContract.FavoriteEntry._ID,
-//                FavoriteContract.FavoriteEntry.COLUMN_MOVIEID,
-//                FavoriteContract.FavoriteEntry.COLUMN_TITLE,
-//                FavoriteContract.FavoriteEntry.COLUMN_USERRATING,
-//                FavoriteContract.FavoriteEntry.COLUMN_POSTER_PATH,
-//                FavoriteContract.FavoriteEntry.COLUMN_PLOT_SYNOPSIS
-//
-//        };
-//        String selection = FavoriteContract.FavoriteEntry.COLUMN_TITLE + " =?";
-//        String[] selectionArgs = { searchItem };
-//        String limit = "1";
-//
-//        Cursor cursor = mDb.query(FavoriteContract.FavoriteEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null, limit);
-//        boolean exists = (cursor.getCount() > 0);
-//        cursor.close();
-//        return exists;
-//    }
-//
+    public boolean Exists(String searchItem) {
+        String[] projection = {
+                FavoriteContract.FavoriteEntry._ID,
+                FavoriteContract.FavoriteEntry.COLUMN_MOVIEID,
+                FavoriteContract.FavoriteEntry.COLUMN_TITLE,
+                FavoriteContract.FavoriteEntry.COLUMN_BACKDROP_PATH,
+                FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE,
+                FavoriteContract.FavoriteEntry.COLUMN_POSTER_PATH,
+                FavoriteContract.FavoriteEntry.COLUMN_OVERVIEW,
+                FavoriteContract.FavoriteEntry.COLUMN_ORIGINAL_TITLE,
+                FavoriteContract.FavoriteEntry.COLUMN_VOTE_COUNT,
+                FavoriteContract.FavoriteEntry.COLUMN_VOTE_AVERAGE
+        };
+        String selection = FavoriteContract.FavoriteEntry.COLUMN_TITLE + " =?";
+        String[] selectionArgs = {searchItem};
+        String limit = "1";
+
+        Cursor cursor = mDb.query(FavoriteContract.FavoriteEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null, limit);
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbarLayout =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
@@ -340,7 +336,7 @@ public class DetailActivity extends AppCompatActivity {
 //    }
 //
 //
-    private void initViews() {
+   // private void initViews() {
 //        trailerList = new ArrayList<>();
 //        trailerAdapter = new TrailerAdapter(this, trailerList);
 //
@@ -352,29 +348,33 @@ public class DetailActivity extends AppCompatActivity {
 //
 //        LoadJSON();
 //        loadReview();
-    }
+    //}
 //
 //    public void LoadJSON(){
 //        //int movie_id = getIntent().getExtras().getInt("id");
 //
 //    }
 //
-//    public void saveFavorite(){
-//        favoriteDbHelper = new FavoriteDbHelper(activity);
-//        favorite = new Movie();
-//        //int movie_id = getIntent().getExtras().getInt("id");
-//
-//        favorite.setId(movie_id);
-//        favorite.setOriginalTitle(movieName);
-//        favorite.setPosterPath(thumbnail);
-//        favorite.setOverview(plotSynopsis.getText().toString().trim());
-//        favorite.setVoteAverage(Double.parseDouble(userRating.getText().toString().trim()));
-//
-//        favoriteDbHelper.addFavorite(favorite);
-//    }
-//
-//    public void deleteFavorite(int id){
-//        favoriteDbHelper = new FavoriteDbHelper(activity);
-//        favoriteDbHelper.deleteFavorite(id);
-//    }
+    public void saveFavorite(){
+        favoriteDbHelper = new FavoriteDbHelper(activity);
+        movie_favorites = new Movie();
+        //int movie_id = getIntent().getExtras().getInt("id");
+
+        movie_favorites.setId(movie_id);
+        movie_favorites.setTitle(nameOfMovie.getText().toString());
+        movie_favorites.setBackdropPath(movie.getBackdropPath());
+        movie_favorites.setReleaseDate(movie.getReleaseDate());
+        movie_favorites.setPosterPath(movie.getPosterPath());
+        movie_favorites.setVoteAverage(movie.getVoteAverage());
+        movie_favorites.setOriginalTitle(movie.getOriginalTitle());
+        movie_favorites.setOverview(movie.getOverview());
+        movie_favorites.setVoteCount(movie.getVoteCount());
+
+        favoriteDbHelper.addFavorite(movie_favorites);
+    }
+
+    public void deleteFavorite(int id){
+        favoriteDbHelper = new FavoriteDbHelper(activity);
+        favoriteDbHelper.deleteFavorite(id);
+    }
 }

@@ -91,7 +91,7 @@ public class InformationFragment extends Fragment {
            }
            tvCast.setText(list_cast);
            tvOriginalTitle.setText(movie.getMovie().getOriginalTitle());
-           tvReleseDate.setText(FormatUtils.formatDate(movie.getMovie().getReleaseDate()));
+           tvReleseDate.setText((movie.getMovie().getReleaseDate().equals(""))?"":FormatUtils.formatDate(movie.getMovie().getReleaseDate()));
            tvStatus.setText(movie.getStatus());
            tvBudget.setText(FormatUtils.formatCurrency(movie.getBudget()));
            tvRevenue.setText(FormatUtils.formatCurrency(movie.getRevenue()));

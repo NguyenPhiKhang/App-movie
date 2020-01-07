@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/frame"
@@ -15,36 +13,28 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/review_item_selector"
         android:clipChildren="false"
         app:cardCornerRadius="10dp"
-        android:background="@drawable/review_item_selector">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="370dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/review_item_selector">
-
-            <ImageView
-                android:id="@+id/image_author"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="16dp"
-                android:contentDescription="Image content"
-                app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/face" />
 
             <TextView
                 android:id="@+id/text_author"
                 style="@style/OverviewLabelStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="36dp"
+                android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:textColor="@color/md_white_1000"
-                app:layout_constraintStart_toEndOf="@+id/image_author"
-                app:layout_constraintTop_toTopOf="@+id/image_author"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/full_names" />
 
             <TextView
@@ -59,10 +49,33 @@
                 android:textColor="@color/md_white_1000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/text_author"
                 app:layout_constraintTop_toBottomOf="@+id/text_author"
+                app:layout_constraintVertical_bias="0.0"
                 tools:text="@tools:sample/lorem" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:cardCornerRadius="20dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="3dp">
+    <LinearLayout
+        android:id="@+id/view_Avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/border_raidus">
 
+        <TextView
+            android:id="@+id/tv_Avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="W"
+            android:textColor="@color/md_white_1000"
+            android:textSize="25sp" />
+    </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

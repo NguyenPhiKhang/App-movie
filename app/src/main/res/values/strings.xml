@@ -60,7 +60,7 @@
     <string name="error_message_failed">Failed to connect to the TMDB API.</string>
 
     <!-- A message when there are no reviews available -->
-    <string name="message_no_reviews">No reviews found.\n\nSorry, we couldn\'t find any reviews,
+    <string name="message_no_reviews">No reviews found.\nSorry, we couldn\'t find any reviews,
         please check back later.</string>
     <string name="message_no_trailers">No trailers found.</string>
 

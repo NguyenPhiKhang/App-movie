@@ -44,7 +44,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.MyViewHolder> 
         holder.tvCastCharacter.setText(mCastList.get(position).getCharacter());
         Glide.with(mContext)
                 .load(Constant.IMAGE_BASE_URL+Constant.BACKDROP_FILE_SIZE+mCastList.get(position).getProfilePath())
-                .placeholder(R.drawable.load)
+                .placeholder(R.drawable.person)
                 .into(holder.ivCast);
     }
 

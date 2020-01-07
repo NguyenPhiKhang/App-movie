@@ -14,7 +14,6 @@ import com.khangse.appmoviepopular.fragment.CastFragment;
 import com.khangse.appmoviepopular.fragment.InformationFragment;
 import com.khangse.appmoviepopular.fragment.ReviewFragment;
 import com.khangse.appmoviepopular.fragment.TrailerFragment;
-import com.khangse.appmoviepopular.model.Movie;
 import com.khangse.appmoviepopular.model.MovieDetails;
 import com.khangse.appmoviepopular.utils.Constant;
 

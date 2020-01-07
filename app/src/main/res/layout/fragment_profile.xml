@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_black_1000">
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="140dp"
+        app:srcCompat="@drawable/ic_icons2klogo"/>
+
+    <TextView
+        android:id="@+id/txtView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đồ án nhập môn ứng dụng di động"
+        android:textSize="28sp"
+        android:layout_marginTop="5dp"
+        android:maxLines="2"
+        android:textStyle="bold"
+        android:textColor="#FF5722"
+        android:textAlignment="center"/>
+    <TextView
+        android:id="@+id/txtView0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ứng dụng xem Movies"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:maxLines="2"
+        android:textColor="#FFC107"
+        android:textAlignment="center" />
+    <TextView
+        android:id="@+id/txtView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Thực hiện bởi:"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"
+        android:textColor="#ffff"/>
+    <TextView
+        android:id="@+id/txtView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:text="Nguyễn Phi Khang       - 17520616"
+        android:textColor="#FFffff" />
+    <TextView
+        android:id="@+id/txtView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:text="Nguyễn Quang Khang - 17520617"
+        android:textColor="#FFffff" />
+    <TextView
+        android:id="@+id/txtVie4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:text="GV hướng dẫn: ThS. Phan Nguyệt Minh"
+        android:textColor="#ffffff"/>
+
+
+</LinearLayout>

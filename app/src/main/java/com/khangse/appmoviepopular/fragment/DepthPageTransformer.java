@@ -1,4 +1,4 @@
-package com.khangse.appmoviepopular;
+package com.khangse.appmoviepopular.fragment;
 
 import android.view.View;
 

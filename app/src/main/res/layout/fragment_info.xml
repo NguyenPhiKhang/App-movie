@@ -113,7 +113,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/tv_vote_count"
                     app:layout_constraintTop_toBottomOf="@+id/tv_vote_average_label"
                     app:layout_constraintVertical_bias="0.363"
-                    app:srcCompat="@drawable/person" />
+                    app:srcCompat="@drawable/person"
+                    android:tint="@color/md_white_1000"/>
 
                 <TextView
                     android:id="@+id/tv_vote_count"

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.khangse.appmoviepopular.BuildConfig;
 import com.khangse.appmoviepopular.DetailActivity;
-import com.khangse.appmoviepopular.MainActivity;
+import com.khangse.appmoviepopular.ListMoviesActivity;
 import com.khangse.appmoviepopular.R;
 import com.khangse.appmoviepopular.adapter.MoviesApdapter;
 import com.khangse.appmoviepopular.api.Client;
@@ -57,6 +53,8 @@ public class MovieFragment extends Fragment {
     private List<Movie> moviePopularList;
     private List<Movie> movieTopRatedList;
     private List<Movie> movieNowPlayingList;
+    private ImageView imgPopular;
+    private ImageView imgTopRated;
     ProgressDialog pd;
 
     @Override
@@ -72,11 +70,6 @@ public class MovieFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
 
-//        pd = new ProgressDialog(recyclerViewPopular.getContext());
-//        pd.setMessage("Fetching Movies...");
-//        pd.setCancelable(false);
-//        pd.show();
-
         customCarouselView = (CarouselView) view.findViewById(R.id.customCarouselView);
         recyclerViewPopular = (MultiSnapRecyclerView) view.findViewById(R.id.recyclerview_popular);
         recyclerViewTopRated = (MultiSnapRecyclerView) view.findViewById(R.id.rv_top_rated);
@@ -85,6 +78,21 @@ public class MovieFragment extends Fragment {
         progressBar_Popular.setVisibility(View.VISIBLE);
         progressBar_Toprated=(ProgressBar)view.findViewById(R.id.probar_toprated);
         progressBar_Toprated.setVisibility(View.VISIBLE);
+
+        imgPopular = (ImageView)view.findViewById(R.id.btn_popular_all);
+        imgTopRated = (ImageView)view.findViewById(R.id.btn_toprated_all);
+        imgPopular.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoListMovies("Best Popular");
+            }
+        });
+        imgTopRated.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoListMovies("Top Rated");
+            }
+        });
 
         moviePopularList = new ArrayList<>();
         movieTopRatedList = new ArrayList<>();
@@ -111,6 +119,14 @@ public class MovieFragment extends Fragment {
         LoadJson();
 
         return view;
+    }
+
+    private void gotoListMovies(String nameList){
+        Intent intent = new Intent(mContext, ListMoviesActivity.class);
+        intent.putExtra("title", nameList);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+        Toast.makeText(mContext, "You clicked category: "+ nameList, Toast.LENGTH_SHORT).show();
     }
 
     private void LoadJson() {
