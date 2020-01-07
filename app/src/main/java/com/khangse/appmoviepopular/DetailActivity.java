@@ -23,6 +23,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.khangse.appmoviepopular.adapter.DetailPageAdapter;
+import com.khangse.appmoviepopular.adapter.TrailerAdapter;
 import com.khangse.appmoviepopular.api.Client;
 import com.khangse.appmoviepopular.api.Service;
 import com.khangse.appmoviepopular.data.FavoriteContract;
@@ -32,7 +33,11 @@ import com.khangse.appmoviepopular.model.Credits;
 import com.khangse.appmoviepopular.model.Genre;
 import com.khangse.appmoviepopular.model.Movie;
 import com.khangse.appmoviepopular.model.MovieDetails;
+import com.khangse.appmoviepopular.model.Trailer;
+import com.khangse.appmoviepopular.model.TrailerResponse;
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +45,7 @@ import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
     TextView nameOfMovie, plotSynopsis, userRating, releaseDate;
-    ImageView imageBackdrop;
+    ImageView imageBackdrop, imgPlay;
     TextView tvRuntime, tvGenre;
     ProgressBar pbGenre;
     private TabLayout mTabLayout;
@@ -79,6 +84,13 @@ public class DetailActivity extends AppCompatActivity {
         FavoriteDbHelper dbHelper = new FavoriteDbHelper(this);
         mDb = dbHelper.getWritableDatabase();
 
+        imgPlay = (ImageView) findViewById(R.id.iv_play_circle);
+        imgPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlayVideo();
+            }
+        });
         imageBackdrop = (ImageView) findViewById(R.id.image_movie_backdrop);
         tvRuntime = (TextView) findViewById(R.id.tv_runtime);
         tvGenre = (TextView) findViewById(R.id.tv_genre);
@@ -92,7 +104,7 @@ public class DetailActivity extends AppCompatActivity {
 
             movie = getIntent().getParcelableExtra("movies");
             nameOfMovie.setText(movie.getTitle().toString());
-            releaseDate.setText((movie.getReleaseDate().equals(""))?"":(movie.getReleaseDate().split("-"))[0]);
+            releaseDate.setText((movie.getReleaseDate().equals("")) ? "" : (movie.getReleaseDate().split("-"))[0]);
             movie_id = movie.getId();
 
             Glide.with(this)
@@ -107,32 +119,8 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No Data API", Toast.LENGTH_SHORT).show();
         }
-//
-//        MaterialFavoriteButton favoriteButton =(MaterialFavoriteButton)findViewById(R.id.favorite_button);
-//
-////        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-////
-////        favoriteButton.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
-////            @Override
-////            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-////                SharedPreferences.Editor editor = getSharedPreferences("com.khangse.movieapp.DetailActivity", MODE_PRIVATE).edit();
-////                if(favorite){
-////                    editor.putBoolean("Favorite Added", true);
-////                    editor.commit();
-////                    saveFavorite();
-////                    Snackbar.make(buttonView, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
-////                }else{
-////                    deleteFavorite(movie_id);
-////                    editor.putBoolean("Favorite Removed", true);
-////                    editor.commit();
-////                    Snackbar.make(buttonView, "Removed from Favorite", Snackbar.LENGTH_SHORT).show();
-////                }
-////            }
-////        });
-//
-//
 
-        MaterialFavoriteButton favoriteButton =(MaterialFavoriteButton)findViewById(R.id.favorite_button);
+        MaterialFavoriteButton favoriteButton = (MaterialFavoriteButton) findViewById(R.id.favorite_button);
 
         if (Exists(nameOfMovie.getText().toString())) {
             favoriteButton.setFavorite(true);
@@ -171,9 +159,6 @@ public class DetailActivity extends AppCompatActivity {
                         }
                     });
         }
-
-
-        //initViews();
     }
 
     private void LoadDetailMovie() {
@@ -336,7 +321,7 @@ public class DetailActivity extends AppCompatActivity {
 //    }
 //
 //
-   // private void initViews() {
+    // private void initViews() {
 //        trailerList = new ArrayList<>();
 //        trailerAdapter = new TrailerAdapter(this, trailerList);
 //
@@ -355,7 +340,7 @@ public class DetailActivity extends AppCompatActivity {
 //
 //    }
 //
-    public void saveFavorite(){
+    public void saveFavorite() {
         favoriteDbHelper = new FavoriteDbHelper(activity);
         movie_favorites = new Movie();
         //int movie_id = getIntent().getExtras().getInt("id");
@@ -373,8 +358,38 @@ public class DetailActivity extends AppCompatActivity {
         favoriteDbHelper.addFavorite(movie_favorites);
     }
 
-    public void deleteFavorite(int id){
+    public void deleteFavorite(int id) {
         favoriteDbHelper = new FavoriteDbHelper(activity);
         favoriteDbHelper.deleteFavorite(id);
+    }
+
+    public void PlayVideo() {
+        Client Client = new Client();
+        Service apiService = Client.getClient().create(Service.class);
+        Call<TrailerResponse> call = apiService.getMovieTrailer(movie_id, BuildConfig.THE_MOVIE_DB_API_TOKEN);
+        call.enqueue(new Callback<TrailerResponse>() {
+            @Override
+            public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        List<Trailer> trailer = response.body().getResults();
+                        if (trailer.size() > 0) {
+                            Intent intent = new Intent(DetailActivity.this, PlayVideoActivity.class);
+                            intent.putExtra("keyVideo", trailer.get(0).getmKey());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Don't have video to play!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TrailerResponse> call, Throwable t) {
+                Log.d("Error", t.getMessage());
+                Toast.makeText(getApplicationContext(), "Error fetching trailer", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
