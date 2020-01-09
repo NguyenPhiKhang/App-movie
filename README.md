@@ -11,7 +11,7 @@ Popular Movies App
 <b>2. Nguyễn Quang Khang</b> - 17520617
 </pre>
 
-### 👩‍💼 Teacher: Phan Nguyệt 
+### 👩‍💼 Teacher: Phan Nguyệt Minh
 ---
 
 ## 🌟 Features
