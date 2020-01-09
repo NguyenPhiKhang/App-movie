@@ -5,6 +5,14 @@ Popular Movies App
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9d71713560374c938dba8a476ce8debf)](https://www.codacy.com/app/maksim-m/Popular-Movies-App)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/9d71713560374c938dba8a476ce8debf)](https://www.codacy.com/app/maksim-m/Popular-Movies-App)
 
+### 🤝 Member:
+<pre>
+<b>1. Nguyễn Phi Khang</b>   - 17520616
+<b>2. Nguyễn Quang Khang</b> - 17520617
+</pre>
+
+### 👩‍💼 Teacher: Nguyễn Vĩnh Kha
+---
 
 ## 🌟 Features
 - Discover the most popular, the highest rated and the most rated movies
