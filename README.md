@@ -26,38 +26,38 @@ Popular Movies App
 ## ✨ Screenshots
 <table style="width:100%">
 <tr>
-    <th  width="33.3%"> <p align="center">
+    <th width=300> <p align="center">
       <p>Main Screen</p>
        <img src="https://user-images.githubusercontent.com/45101536/72078593-f9749980-332b-11ea-9548-1add2ebc3c9b.gif"
             width="200" height="400"><br>
       </p>
   </th>
-    <th width="33.3%"> <p align="center">
+    <th width=300> <p align="center">
        <p>Movie Details</p>
        <img src="https://user-images.githubusercontent.com/45101536/72081510-342d0080-3331-11ea-8cd6-f5a69372590c.gif"
              width="200" height="400"><br>
   </p>
   </th>
-  <th width="33.3%"> <p align="center">
+  <th width=300> <p align="center">
        <p>Favorites Screen</p>
        <img src="https://user-images.githubusercontent.com/45101536/72080015-92a4af80-332e-11ea-805c-1f7e0f0a44fb.png"  width="200" height="400"><br>
       </p>
   </th>  
 </tr>
 <tr>
-    <th  width="33.3%"> <p align="center">
+    <th  width=300> <p align="center">
       <p>Search Screen</p>
        <img src="https://user-images.githubusercontent.com/45101536/72077331-a568b580-3329-11ea-90fe-a697e270fd81.png"
             width="200" height="400"><br>
       </p>
   </th>
-    <th width="33.3%"> <p align="center">
+    <th width=300> <p align="center">
        <p>Player Screen</p>
        <img src="https://user-images.githubusercontent.com/45101536/72083339-380e5200-3334-11ea-9502-cd1230968f74.gif"
              width="200" height="400"><br>
   </p>
   </th>
-  <th width="33.3%"> <p align="center">
+  <th width=300> <p align="center">
        <p>Categories Screen</p>
        <img src="https://user-images.githubusercontent.com/45101536/72079655-e6fb5f80-332d-11ea-9471-be6a9486e348.gif"  width="200" height="400"><br>
       </p>
