@@ -50,7 +50,7 @@ Popular Movies App
   </p>
   </th>
   <th width="33.3%"> <p align="center">
-       <p>Categories Screen Screen</p>
+       <p>Categories Screen</p>
        <img src="https://user-images.githubusercontent.com/45101536/72079655-e6fb5f80-332d-11ea-9471-be6a9486e348.gif"  width="200" height="400"><br>
       </p>
   </tr>
